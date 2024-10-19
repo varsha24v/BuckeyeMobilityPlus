@@ -1,0 +1,15 @@
+# iOS files
+/ios/Pods/
+/ios/build/
+
+# Node modules
+/node_modules
+
+# Xcode
+*.xcworkspace
+*.xcuserdata
+
+# Logs
+npm-debug.log
+yarn-error.log
+v
