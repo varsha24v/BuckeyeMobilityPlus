@@ -1,0 +1,25 @@
+{
+  "name": "CampusMobilityPlus",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-native start",
+    "ios": "react-native run-ios",
+    "android": "react-native run-android",
+    "build": "xcodebuild -workspace ios/CampusMobility+.xcworkspace -scheme CampusMobility+ -configuration Release"
+  },
+  "dependencies": {
+    "react": "18.0.0",
+    "react-native": "0.71.0",
+    "react-navigation": "^6.1.2",
+    "react-native-maps": "^0.31.0",
+    "axios": "^1.5.2",
+    "firebase": "^10.5.0",
+    "lottie-react-native": "^5.1.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.0",
+    "@babel/runtime": "^7.22.0",
+    "metro-react-native-babel-preset": "^0.73.0"
+  }
+}
