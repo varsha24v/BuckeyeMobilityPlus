@@ -1,0 +1,74 @@
+import UIKit
+import GoogleMaps
+
+class ViewController: UIViewController {
+
+    // Google Maps View
+    var mapView: GMSMapView!
+   
+    // Example origin and destination coordinates
+    let originLocation = CLLocationCoordinate2D(latitude: 40.730610, longitude: -73.935242) // Example: New York
+    let destinationLocation = CLLocationCoordinate2D(latitude: 40.712776, longitude: -74.005974) // Example: Lower Manhattan
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+       
+        // Initialize the Google Map
+        let camera = GMSCameraPosition.camera(withLatitude: originLocation.latitude, longitude: originLocation.longitude, zoom: 10.0)
+        mapView = GMSMapView.map(withFrame: self.view.bounds, camera: camera)
+        self.view.addSubview(mapView)
+       
+        // Fetch commute time using real-time traffic data
+        getCommutePrediction(origin: originLocation, destination: destinationLocation)
+    }
+
+    // Function to fetch commute time with traffic data
+    func getCommutePrediction(origin: CLLocationCoordinate2D, destination: CLLocationCoordinate2D) {
+        // Build the request URL
+        let originStr = "\(origin.latitude),\(origin.longitude)"
+        let destinationStr = "\(destination.latitude),\(destination.longitude)"
+        let apiKey = "AIzaSyBl0AMSq2El2dmBNxGBvSUOB5meXunt7Ec"
+       
+        let trafficModel = "best_guess" // Options: best_guess, pessimistic, optimistic
+        let directionsURL = "https://maps.googleapis.com/maps/api/directions/json?origin=\(originStr)&destination=\(destinationStr)&departure_time=now&traffic_model=\(trafficModel)&key=\(AIzaSyBl0AMSq2El2dmBNxGBvSUOB5meXunt7Ec)"
+       
+        guard let url = URL(string: directionsURL) else { return }
+
+        // Make a network request to fetch commute prediction
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            if let error = error {
+                print("Error fetching directions: \(error)")
+                return
+            }
+            guard let data = data else { return }
+
+            do {
+                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let routes = json["routes"] as? [[String: Any]],
+                   let firstRoute = routes.first,
+                   let legs = firstRoute["legs"] as? [[String: Any]],
+                   let firstLeg = legs.first,
+                   let durationInTraffic = firstLeg["duration_in_traffic"] as? [String: Any],
+                   let durationText = durationInTraffic["text"] as? String {
+                   
+                    print("Estimated travel time with traffic: \(durationText)")
+                   
+                    DispatchQueue.main.async {
+                        // Update the UI with commute time
+                        self.showAlert(message: "Estimated travel time: \(durationText)")
+                    }
+                }
+            } catch {
+                print("Error parsing JSON: \(error)")
+            }
+        }
+        task.resume()
+    }
+
+    // Helper function to show commute time as an alert
+    func showAlert(message: String) {
+        let alert = UIAlertController(title: "Commute Time", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+}
