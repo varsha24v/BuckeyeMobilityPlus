@@ -4,117 +4,121 @@
 
 import SwiftUI
 
-struct AccountView: View {
+struct EditProfileView: View {
+    @State private var username = "waghmare.7"
+    @State private var email = "waghmare.7@osu.edu"
+    @State private var phoneNumber = "+14987889999"
+    @State private var password = "admin@EZ345"
+    
     var body: some View {
         VStack {
-            // Profile section
-            VStack {
-                Text("Account")
-                    .font(.largeTitle)
+            // Header
+            HStack {
+                Button(action: {
+                    // Back action
+                }) {
+                    Image(systemName: "chevron.left")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+                
+                Spacer()
+                
+                Text("Edit Profile")
+                    .font(.title2)
                     .fontWeight(.bold)
-                    .padding(.top)
-
-                // Profile Image
-                Image("profile") // Use your profile image here
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Button(action: {
+                    // Share action
+                }) {
+                    Image(systemName: "square.and.arrow.up")
+                        .font(.title2)
+                        .foregroundColor(.white)
+                }
+            }
+            .padding()
+            .background(Color.red)
+            
+            // Profile Picture
+            VStack {
+                Image("profilePicture")  // Add your own image or use the asset from the app
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 120, height: 120)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.white, lineWidth: 4))
                     .shadow(radius: 10)
-                    .padding()
-
-                // User's Name
-                Text("Aishani Waghmare")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.bottom)
+                    .padding(.top, -40)
+                
+                Button(action: {
+                    // Action to change picture
+                }) {
+                    Text("Add/Edit Picture")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
             }
+            
+            // Form Fields
+            VStack(spacing: 20) {
+                TextField("Username", text: $username)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .shadow(radius: 2)
+                    .disableAutocorrection(true)
 
-            // Level and progress section
-            VStack {
-                Text("Level 2")
-                    .font(.title)
-                    .fontWeight(.semibold)
+                TextField("Email", text: $email)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .keyboardType(.emailAddress)
+                    .disableAutocorrection(true)
+                    .shadow(radius: 2)
+                
+                TextField("Phone Number", text: $phoneNumber)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .keyboardType(.phonePad)
+                    .shadow(radius: 2)
+                
+                SecureField("Password", text: $password)
+                    .padding()
+                    .background(Color.white)
+                    .cornerRadius(8)
+                    .shadow(radius: 2)
+            }
+            .padding()
+            
+            Spacer()
+            
+            // Update Button
+            Button(action: {
+                // Action to update profile
+            }) {
+                Text("Update")
+                    .font(.headline)
                     .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.red)
-                    .cornerRadius(10)
-
-                Text("800 points to next level")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
-
-                // Progress Bar
-                ProgressView(value: 5200, total: 6000)
-                    .padding()
-                    .progressViewStyle(LinearProgressViewStyle(tint: Color.red))
-
-                Text("5200/6000")
-                    .font(.footnote)
-                    .foregroundColor(.gray)
+                    .cornerRadius(8)
+                    .padding(.horizontal)
             }
-            .padding()
-
-            // Activities section
-            VStack(alignment: .leading, spacing: 20) {
-                Text("Activities")
-                    .font(.headline)
-
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search Friends")
-                }
-                
-                HStack {
-                    Image(systemName: "car.fill")
-                    Text("Find Rides")
-                }
-
-                HStack {
-                    Image(systemName: "star.fill")
-                    Text("Redeem Points")
-                }
-            }
-            .padding()
-            .background(Color.gray.opacity(0.2))
-            .cornerRadius(10)
-            .padding()
-
-            Spacer()
-
-            // Bottom Navigation
-            HStack {
-                Spacer()
-
-                VStack {
-                    Image(systemName: "house.fill")
-                    Text("Home")
-                }
-                Spacer()
-
-                VStack {
-                    Image(systemName: "location.fill")
-                    Text("Explore")
-                }
-                Spacer()
-
-                VStack {
-                    Image(systemName: "person.crop.circle.fill")
-                    Text("Account")
-                }
-                Spacer()
-            }
-            .padding()
-            .background(Color.red)
-            .foregroundColor(.white)
         }
+        .background(Color(UIColor.systemGray6))  // Light background color
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
-struct AccountView_Previews: PreviewProvider {
+struct EditProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        AccountView()
+        EditProfileView()
     }
 }
+
 
